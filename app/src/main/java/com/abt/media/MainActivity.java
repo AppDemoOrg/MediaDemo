@@ -26,11 +26,22 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.surface)
     SurfaceView mSurfaceView;
     @OnClick(R.id.button_start) void startBtn() {
+        mCamera = getBackCamera();
+        startCamera(mCamera);
+        mAvcCodec = new AvcEncoder(mWidth, mHeight, mFrameRate, mBiteRate);
         mAvcCodec.startEncoderThread();
         Toast.makeText(this, "start to record video", Toast.LENGTH_SHORT).show();
     }
     @OnClick(R.id.button_stop) void stopBtn() {
-        mAvcCodec.stopThread();
+        /*if (null != mCamera) {
+            mCamera.setPreviewCallback(null);
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }*/
+        if (null != mAvcCodec) {
+            mAvcCodec.stopThread();
+        }
         Toast.makeText(this, "stop to record video", Toast.LENGTH_SHORT).show();
     }
 
@@ -39,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements
     private Camera.Parameters mParameters;
     private int mWidth = 1280;
     private int mHeight = 720;
-    private int mFrameRate = 30;
+    private int mFrameRate = 15;
     private int mBiteRate = 8500*1000;
     private static int mYuvQueueSize = 10;
     private AvcEncoder mAvcCodec;
@@ -107,20 +118,20 @@ public class MainActivity extends AppCompatActivity implements
         return false;
     }
 
-    private void startCamera(Camera mCamera) {
-        if (mCamera != null) {
+    private void startCamera(Camera camera) {
+        if (camera != null) {
             try {
-                mCamera.setPreviewCallback(this);
-                mCamera.setDisplayOrientation(90);
+                camera.setPreviewCallback(this);
+                camera.setDisplayOrientation(90);
                 if(mParameters == null){
-                    mParameters = mCamera.getParameters();
+                    mParameters = camera.getParameters();
                 }
-                mParameters = mCamera.getParameters();
+                mParameters = camera.getParameters();
                 mParameters.setPreviewFormat(ImageFormat.NV21);
                 mParameters.setPreviewSize(mWidth, mHeight);
-                mCamera.setParameters(mParameters);
-                mCamera.setPreviewDisplay(mSurfaceHolder);
-                mCamera.startPreview();
+                camera.setParameters(mParameters);
+                camera.setPreviewDisplay(mSurfaceHolder);
+                camera.startPreview();
             } catch (IOException e) {
                 e.printStackTrace();
             }

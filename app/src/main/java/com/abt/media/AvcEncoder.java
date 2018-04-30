@@ -34,10 +34,10 @@ public class AvcEncoder {
     private int mCount = 0;
 
     @SuppressLint("NewApi")
-    public AvcEncoder(int width, int height, int framerate, int bitrate) {
+    public AvcEncoder(int width, int height, int frameRate, int bitRate) {
         mWidth = width;
         mHeight = height;
-        mFrameRate = framerate;
+        mFrameRate = frameRate;
         MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", width, height);
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
         mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width*height*5);
@@ -94,7 +94,7 @@ public class AvcEncoder {
             public void run() {
                 mIsRuning = true;
                 byte[] input = null;
-                long pts =  0;
+                long pts = 0;
                 long generateIndex = 0;
 
                 while (mIsRuning) {
@@ -159,17 +159,17 @@ public class AvcEncoder {
 
     private void NV21ToNV12(byte[] nv21,byte[] nv12,int width,int height) {
         if(nv21 == null || nv12 == null)return;
-        int framesize = width*height;
+        int frameSize = width*height;
         int i = 0,j = 0;
-        System.arraycopy(nv21, 0, nv12, 0, framesize);
-        for(i = 0; i < framesize; i++){
+        System.arraycopy(nv21, 0, nv12, 0, frameSize);
+        for(i = 0; i < frameSize; i++){
             nv12[i] = nv21[i];
         }
-        for (j = 0; j < framesize/2; j+=2) {
-            nv12[framesize + j-1] = nv21[j+framesize];
+        for (j = 0; j < frameSize/2; j+=2) {
+            nv12[frameSize + j-1] = nv21[j+frameSize];
         }
-        for (j = 0; j < framesize/2; j+=2) {
-            nv12[framesize + j] = nv21[j+framesize-1];
+        for (j = 0; j < frameSize/2; j+=2) {
+            nv12[frameSize + j] = nv21[j+frameSize-1];
         }
     }
 
