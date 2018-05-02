@@ -1,10 +1,12 @@
-package com.abt.media;
+package com.abt.media.HardEncoder;
 
 import android.annotation.SuppressLint;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Environment;
+
+import com.abt.media.MainActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,7 +27,7 @@ public class AvcEncoder {
     private int mFrameRate;
     private byte[] mInfo = null;
     public byte[] mConfigByte;
-    private static String mPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test1.h264";
+    private static String mPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.h264";
     private BufferedOutputStream mOutputStream;
     private FileOutputStream mOutStream;
     private ByteBuffer[] mInputBuffers;
